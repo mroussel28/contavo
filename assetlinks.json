@@ -1,0 +1,3 @@
+[{"relation":["delegate_permission/common.handle_all_urls"],
+  "target":{"namespace":"android_app","package_name":"A_REMPLIR_PAR_BUBBLEWRAP_OU_PWABUILDER",
+  "sha256_cert_fingerprints":["A_REMPLIR_EMPREINTE_SHA256_DE_LA_CLE_DE_SIGNATURE_GOOGLE_PLAY"]}}]
