@@ -1,5 +1,5 @@
 // Contavo : fonctionnement hors connexion. Aucune donnée utilisateur ne transite ici.
-const CACHE='contavo-v1.3.0';
+const CACHE='contavo-v1.5.0';
 const FILES=['./','./index.html','./manifest.webmanifest','./confidentialite.html','./mentions-legales.html','./conditions.html','./icon.svg','./icon-192.png','./icon-512.png','./maskable-512.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});

@@ -192,7 +192,7 @@ footer{max-width:1100px;margin:0 auto;padding:8px 16px 28px;font-size:.88rem;col
   <details><summary>Si je désinstalle l'application, que deviennent mes données ?</summary><p>Elles sont effacées avec l'application. Faites une sauvegarde avant. Effacer les données de navigation du navigateur pour ce site a le même effet.</p></details>
   <details><summary>Comment installer Contavo sur iPhone ?</summary><p>Ouvrez le site dans Safari, touchez Partager puis « Sur l'écran d'accueil ». L'application s'ouvre ensuite en plein écran et fonctionne hors connexion.</p></details>
   <details><summary>Comment est calculé le coût d'une livraison ?</summary><p>Km parcourus × (consommation du véhicule × prix de l'énergie ÷ 100 + usure au km). Ces valeurs se règlent dans la rubrique Véhicules. Le net = rémunération + pourboire − coût du trajet.</p></details>
-  <details><summary>D'où viennent les consommations des véhicules ?</summary><p>Des données officielles d'homologation (cycle WLTP) publiées par l'ADEME (véhicules neufs vendus en France) et par l'Agence européenne pour l'environnement (immatriculations en France 2021-2022). Elles sont souvent un peu inférieures à la consommation réelle : vous pouvez les corriger. Pour les voitures sans permis, scooters et motos les plus courants, ce sont les données publiées par les constructeurs. Les quads et certains modèles récents n'y figurent pas encore : saisissez-les à la main.</p></details>
+  <details><summary>D'où viennent les consommations des véhicules ?</summary><p>Des données officielles d'homologation (cycle WLTP) publiées par l'ADEME (véhicules neufs vendus en France) et par l'Agence européenne pour l'environnement (immatriculations en France 2021-2022), complétées par la base ouverte Open EV Data (véhicules électriques, licence MIT, © KilowattApp) et par les fiches techniques des constructeurs. Elles sont souvent un peu inférieures à la consommation réelle : vous pouvez les corriger. Pour les voitures sans permis, scooters et motos les plus courants, ce sont les données publiées par les constructeurs. Les quads et certains modèles récents n'y figurent pas encore : saisissez-les à la main.</p></details>
   <details><summary>Comment est calculé le coût réel au km de mon véhicule ?</summary><p>Total des dépenses de l'année divisé par les km parcourus, mesurés entre le premier et le dernier relevé de compteur de l'année. Pensez à noter un relevé en début et en fin de période.</p></details>
   <details><summary>Pourquoi ma mensualité est-elle différente de celle de ma banque ?</summary><p>Contavo calcule un prêt à taux fixe et échéances constantes. Les différés, paliers, frais intégrés ou arrondis bancaires peuvent créer de petits écarts : seul le tableau d'amortissement de votre banque fait foi.</p></details>
   <details><summary>Contavo me donne-t-il des conseils fiscaux ou financiers ?</summary><p>Non. Les chiffres sont des estimations pour vous aider à suivre vos comptes. Pour vos impôts, consultez impots.gouv.fr ; pour un prêt, votre banque.</p></details>
@@ -220,11 +220,18 @@ footer{max-width:1100px;margin:0 auto;padding:8px 16px 28px;font-size:.88rem;col
  <div class="row" style="margin:0"><button class="btn pri" value="ok" id="dlgOk">Enregistrer</button><button class="btn" value="cancel" formnovalidate>Annuler</button></div>
 </form></dialog>
 <div id="toast" role="status" aria-live="polite"></div>
+<div id="propose" role="region" aria-label="Proposer un ajout" hidden style="position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));max-width:560px;margin:0 auto;background:var(--card);border:2px solid var(--acc);border-radius:14px;padding:12px 14px;z-index:25;box-shadow:0 8px 24px rgba(0,0,0,.25)">
+ <p id="propT" style="margin:0 0 8px"></p>
+ <div class="row" style="margin:0"><a class="btn pri" id="propA" target="_blank" rel="noopener noreferrer">Proposer l'ajout</a><button class="btn" id="propX" type="button">Non merci</button></div>
+ <p class="note" style="margin:6px 0 0">Seul ce nom est envoyé, via le formulaire anonyme. Rien d'autre ne quitte votre appareil.</p>
+</div>
+<datalist id="dl-banques"><option value="BNP Paribas"><option value="Société Générale"><option value="Crédit Agricole"><option value="Caisse d&#x27;Épargne"><option value="Banque Populaire"><option value="LCL"><option value="Crédit Mutuel"><option value="CIC"><option value="La Banque Postale"><option value="BRED"><option value="Crédit Coopératif"><option value="CCF"><option value="Banque Palatine"><option value="BoursoBank"><option value="Hello bank!"><option value="Fortuneo"><option value="Monabanq"><option value="Shine"><option value="Cetelem"><option value="Cofidis"><option value="Sofinco"><option value="Franfinance"><option value="Floa"><option value="Oney"><option value="Younited"><option value="Carrefour Banque"><option value="CA Consumer Finance"><option value="Mobilize Financial Services (Renault, Dacia)"><option value="Stellantis Financial Services (Peugeot, Citroën, Fiat, Opel…)"><option value="Toyota Financial Services"><option value="Volkswagen Financial Services"><option value="BMW Financial Services"><option value="Mercedes-Benz Financial Services"><option value="Hyundai Capital"><option value="Kia Finance"><option value="BYD Financial Services"><option value="Action Logement"><option value="Autre"></datalist>
+<datalist id="dl-assureurs"><option value="AXA"><option value="Allianz"><option value="Generali"><option value="Groupama"><option value="Gan"><option value="MAAF"><option value="MAIF"><option value="MACIF"><option value="Matmut"><option value="MMA"><option value="GMF"><option value="Thélem"><option value="Abeille Assurances"><option value="Swiss Life"><option value="AG2R La Mondiale"><option value="Malakoff Humanis"><option value="Harmonie Mutuelle"><option value="MGEN"><option value="MACSF"><option value="Mutuelle des Motards"><option value="Direct Assurance"><option value="L&#x27;olivier Assurance"><option value="Leocare"><option value="Ornikar Assurance"><option value="Acheel"><option value="Assu 2000"><option value="Solly Azar"><option value="Wakam"><option value="April"><option value="Alptis"><option value="Néoliane"><option value="Hiscox"><option value="Pacifica (Crédit Agricole)"><option value="Predica (Crédit Agricole)"><option value="BNP Paribas Cardif"><option value="CNP Assurances"><option value="BPCE Assurances"><option value="Sogessur (Société Générale)"><option value="Sogécap (Société Générale)"><option value="Assurances du Crédit Mutuel"><option value="Afi Esca"><option value="Utwin"><option value="Metlife"><option value="Autre"></datalist>
 <datalist id="dl-plat"><option value="Shopopop"><option value="Yper"><option value="Uber Eats"><option value="Deliveroo"><option value="Stuart"><option value="Autre"></datalist>
 
 <script>
 "use strict";
-const VERSION='1.3.0', KEY='contavo.v1';
+const VERSION='1.5.0', KEY='contavo.v1';
 /* À renseigner : lien du formulaire Google et adresse de contact */
 const CONFIG={form:'https://forms.gle/qjBmpSQFVbPAcjDQ6',mail:''};
 const ok=v=>v&&!v.startsWith('[');
@@ -274,13 +281,13 @@ const SCH={
   {k:'brut',l:'Salaire brut (€)',n:1},{k:'netAv',l:'Net à payer avant impôt (€)',n:1},
   {k:'pas',l:'Impôt prélevé à la source (€)',n:1},{k:'net',l:'Net payé (€)',n:1},{k:'primes',l:'Dont primes (€)',n:1}]},
  prets:{t:'Prêt',f:[
-  {k:'nom',l:'Nom du prêt',req:1,ph:'Ex. Prêt auto'},{k:'preteur',l:'Organisme'},
+  {k:'nom',l:'Nom du prêt',req:1,ph:'Ex. Prêt auto'},{k:'preteur',l:'Organisme prêteur',list:'dl-banques',ph:'Choisir ou saisir'},
   {k:'type',l:'Type',o:[['immobilier','Immobilier'],['auto','Auto / moto'],['conso','Consommation'],['travaux','Travaux'],['autre','Autre']]},
   {k:'capital',l:'Montant emprunté (€)',n:1,req:1},{k:'taux',l:'Taux annuel hors assurance (%)',n:1},
   {k:'duree',l:'Durée (mois)',n:1,req:1},{k:'debut',l:'Date de la 1re échéance',d:1,req:1},
   {k:'assur',l:'Assurance emprunteur par mois (€)',n:1},{k:'frais',l:'Frais de dossier et garantie (€)',n:1}]},
  assurances:{t:'Assurance',f:[
-  {k:'nom',l:'Nom',req:1,ph:'Ex. Habitation'},{k:'assureur',l:'Assureur'},
+  {k:'nom',l:'Nom',req:1,ph:'Ex. Habitation'},{k:'assureur',l:'Assureur',list:'dl-assureurs',ph:'Choisir ou saisir'},
   {k:'type',l:'Type',o:[['auto','Auto / moto'],['habitation','Habitation'],['sante','Santé / mutuelle'],['prevoyance','Prévoyance'],['emprunteur','Emprunteur (payée à part)'],['autre','Autre']]},
   {k:'montant',l:'Montant de la cotisation (€)',n:1,req:1},
   {k:'freq',l:'Payée',o:[['mois','Chaque mois'],['trimestre','Chaque trimestre'],['semestre','Chaque semestre'],['an','Une fois par an']]},
@@ -298,7 +305,7 @@ function openForm(c,id){
   if(f.o){const o=typeof f.o==='function'?f.o():f.o;inp=`<select id="${idf}" name="${f.k}"${f.req?' required':''}>${o.map(([a,b])=>`<option value="${esc(a)}"${String(v??'')===a?' selected':''}>${esc(b)}</option>`).join('')}</select>`}
   else{const ty=f.d?'date':f.m?'month':'text';inp=`<input id="${idf}" name="${f.k}" type="${ty}"${f.n?' inputmode="decimal" autocomplete="off"':''}${f.list?` list="${f.list}"`:''}${f.ph?` placeholder="${esc(f.ph)}"`:''}${f.req?' required':''} maxlength="120" value="${esc(v??'')}">`}
   return `<label for="${idf}">${lab}${inp}${f.a?`<span class="aide">${esc(f.a)}</span>`:''}</label>`}).join('');
- if(c==='vehicules'&&!id)picker();
+ PICKED=null;if(c==='vehicules'&&!id)picker();
  $('dlg').showModal();setTimeout(()=>{const x=$('dlgB').querySelector('input,select');x&&x.focus()},30);
 }
 $('dlgOk').addEventListener('click',e=>{
@@ -310,7 +317,7 @@ $('dlgOk').addEventListener('click',e=>{
  if(c==='prets'&&!bad&&!(num(o.duree)>=1&&num(o.duree)<=600))bad='La durée doit être comprise entre 1 et 600 mois.';
  if(bad){$('dlgE').textContent=bad;return}
  if(id)Object.assign(S[c].find(x=>x.id===id),o);else S[c].push({id:uid(),...o});
- save();$('dlg').close();render();toast('Enregistré');
+ save();$('dlg').close();render();toast('Enregistré');checkLists(c,o);
 });
 document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
  if(b.dataset.add)openForm(b.dataset.add);
@@ -337,7 +344,7 @@ const kpi=(l,v,cls='')=>`<div class="kpi ${cls}"><span>${l}</span><b>${v}</b></d
 /* ---------- Base véhicules (ADEME + Agence européenne pour l'environnement) ---------- */
 let VDB=null;
 async function vdb(){if(VDB)return VDB;try{const r=await fetch('vehicules.json');if(!r.ok)throw 0;VDB=await r.json()}catch(e){VDB=null}return VDB}
-const cap=s=>s.toLowerCase().replace(/(^|[\s\-\/(])(\p{L})/gu,(m,a,b)=>a+b.toUpperCase());
+const cap=s=>s.split(' ').map(w=>(/^[A-Z0-9.]{1,3}$/.test(w)||/^(?=.*\d)[A-Z0-9.\-+]+$/.test(w))?w:w.toLowerCase().replace(/(^|[\-\/(])(\p{L})/gu,(m,a,b)=>a+b.toUpperCase())).join(' ');
 async function picker(){
  $('dlgB').insertAdjacentHTML('afterbegin',`<div id="vpick" style="grid-column:1/-1;background:var(--accT);padding:12px;border-radius:12px;display:grid;gap:10px">
   <p class="note" style="margin:0"><b>Choisissez votre véhicule</b> : sa consommation officielle se remplit toute seule. Vous pourrez la corriger ensuite.</p>
@@ -350,12 +357,31 @@ async function picker(){
  if(!db){B.innerHTML='<option value="">Liste indisponible</option>';B.disabled=true;src.textContent="La liste des véhicules n'a pas pu être chargée (connexion ?). Saisissez les valeurs à la main.";return}
  B.innerHTML='<option value="">— Choisir —</option>'+Object.keys(db.d).map(b=>`<option>${esc(b)}</option>`).join('');src.textContent=absent;
  B.onchange=()=>{const ms=db.d[B.value]||{};M.innerHTML='<option value="">— Choisir —</option>'+Object.keys(ms).map(m=>`<option>${esc(m)}</option>`).join('');M.disabled=!B.value;V.innerHTML='<option value="">—</option>';V.disabled=true};
- M.onchange=()=>{const vs=(db.d[B.value]||{})[M.value]||[];V.innerHTML='<option value="">— Choisir —</option>'+vs.map((v,i)=>`<option value="${i}">${esc(v.v)} · ${esc(v.t)}</option>`).join('');V.disabled=!M.value};
- V.onchange=()=>{const v=((db.d[B.value]||{})[M.value]||[])[+V.value];if(!v)return;
-  $('f_nom').value=cap(B.value+' '+v.v.replace(/ – .*$/,''));
-  $('f_energie').value=v.e;$('f_conso').value=String(v.c).replace('.',',');
+ M.onchange=()=>{const vs=(db.d[B.value]||{})[M.value]||[];V.innerHTML='<option value="">— Choisir —</option>'+vs.map((v,i)=>`<option value="${i}">${esc(v.v)} · ${esc(v.t)}${v.c==null?' · conso à compléter':''}</option>`).join('');V.disabled=!M.value};
+ V.onchange=()=>{const v=((db.d[B.value]||{})[M.value]||[])[+V.value];PICKED=v||null;if(!v)return;
+  $('f_nom').value=(v.s==='C'||v.s==='O')?cap(B.value)+' '+v.v:cap(B.value+' '+v.v.replace(/ – .*$/,''));
+  $('f_energie').value=v.e;
+  if(v.c==null){$('f_conso').value='';src.innerHTML=`La consommation de ce véhicule n'est pas encore dans la base. <b>Indiquez la vôtre</b> (relevée au compteur ou à la pompe), puis aidez les autres utilisateurs en la signalant dans <a href="#aide">Aide &amp; idées</a>.`;$('f_conso').focus();return}
+  $('f_conso').value=String(v.c).replace('.',',');
   const u=v.e==='electrique'?'kWh/100 km':'L/100 km';
   src.innerHTML=`${v.s==='C'?'Consommation constructeur':'Consommation officielle (cycle WLTP)'} : <b>${fmt(v.c)} ${u}</b>${v.n?` (${esc(v.n)})`:''}${v.ce?` en essence/diesel, et ${fmt(v.ce)} kWh/100 km en mode électrique`:''}${v.a?` · autonomie annoncée ${v.a} km`:''}. Source : ${esc(db.sources[v.s])}. En conditions réelles, comptez souvent un peu plus. Indiquez maintenant le prix de votre énergie.`};
+}
+
+
+/* ---------- Proposer un ajout aux listes (formulaire anonyme pré-rempli) ---------- */
+const FORM_ID='1FAIpQLScyBOUYAM7iChgq5t15QwXWP4hkN4tMJPqN9HmE_TInYrGxwA';
+const LISTS={plateforme:['dl-plat','Livraisons','plateformes de livraison'],preteur:['dl-banques','Prêts & assurances','organismes prêteurs'],assureur:['dl-assureurs','Prêts & assurances','assureurs']};
+let PICKED=null;
+const device=()=>/iPhone|iPad/.test(navigator.userAgent)?'iPhone':/Android/.test(navigator.userAgent)?'Android':'Ordinateur';
+function formUrl(rub,txt){const q=new URLSearchParams({usp:'pp_url','entry.296088191':rub,'entry.1872347538':"Idée d'amélioration",'entry.1597916316':txt,'entry.1942393361':device()});return `https://docs.google.com/forms/d/e/${FORM_ID}/viewform?${q}`}
+function propose(msg,rub,txt){$('propT').innerHTML=msg;$('propA').href=formUrl(rub,txt);$('propose').hidden=false}
+$('propX').onclick=()=>{$('propose').hidden=true};$('propA').addEventListener('click',()=>setTimeout(()=>{$('propose').hidden=true;toast('Merci pour votre proposition !')},300));
+function checkLists(c,o){
+ for(const k in LISTS){if(!(k in o)||!o[k])continue;const [dl,rub,nom]=LISTS[k];const v=String(o[k]).trim();
+  const known=[...document.querySelectorAll('#'+dl+' option')].some(x=>x.value.toLowerCase()===v.toLowerCase());
+  if(!known){propose(`« <b>${esc(v)}</b> » n'est pas dans la liste des ${nom}. Voulez-vous proposer de l'ajouter pour tous les utilisateurs ?`,rub,`Ajouter à la liste des ${nom} : « ${v} »`);return}}
+ if(c==='vehicules'&&(!PICKED||PICKED.c==null)&&num(o.conso)>0){const u=o.energie==='electrique'?'kWh/100 km':'L/100 km';
+  propose(`Votre véhicule « <b>${esc(o.nom)}</b> » n'a pas encore de consommation dans la liste. Voulez-vous partager la vôtre (${fmt(num(o.conso))} ${u}) pour aider les autres utilisateurs ?`,'Véhicules',`Ajouter le véhicule « ${o.nom} » (${LAB('vehicules','energie',o.energie)}) – consommation constatée : ${fmt(num(o.conso))} ${u}`)}
 }
 
 /* ---------- Calculs ---------- */
