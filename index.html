@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Contavo</title>
+<meta name="description" content="Suivez vos livraisons, vos véhicules, vos bulletins de salaire, vos prêts et vos assurances. Vos données restent sur votre appareil.">
+<meta name="theme-color" content="#14213d">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>
+:root{--navy:#14213d;--acc:#0f8f85;--accT:#e0f3f1;--sun:#ffd166;--bg:#eef3f6;--card:#fff;--line:#d3dee6;--ink:#14213d;--ink2:#44546d;--muted:#5f6f86;--gain:#0b7a5f;--bad:#b3261e;--warnT:#fdf1db;--warn:#7a4d00;
+--font:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0e1729;--card:#172540;--line:#2a3c60;--ink:#eef3f8;--ink2:#c0ccdd;--muted:#9aa9bf;--accT:#163d3b;--gain:#45c79f;--bad:#ff8a80;--warnT:#3a2f1a;--warn:#f4c46a}}
+:root[data-theme=dark]{--bg:#0e1729;--card:#172540;--line:#2a3c60;--ink:#eef3f8;--ink2:#c0ccdd;--muted:#9aa9bf;--accT:#163d3b;--gain:#45c79f;--bad:#ff8a80;--warnT:#3a2f1a;--warn:#f4c46a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:1rem/1.5 var(--font);padding-bottom:env(safe-area-inset-bottom)}
+a{color:var(--acc)}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px;border-radius:6px}
+.skip{position:absolute;left:-999px;top:0;background:var(--card);padding:8px 12px;z-index:20}.skip:focus{left:8px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+header{background:var(--navy);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 16px 0}
+.top{display:flex;align-items:center;gap:10px;max-width:1100px;margin:0 auto}
+.top h1{font-size:1.3rem;margin:0;flex:1}.top h1 small{display:block;font-size:.8rem;font-weight:400;color:#c8d3e6}
+.top img{width:38px;height:38px}
+nav{max-width:1100px;margin:8px auto 0;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+nav a{color:#d5deeb;text-decoration:none;padding:10px 12px;border-radius:10px 10px 0 0;font-weight:700;white-space:nowrap;min-height:44px;display:flex;align-items:center}
+nav a[aria-current=page]{background:var(--bg);color:var(--ink)}
+main{max-width:1100px;margin:0 auto;padding:16px}
+section[hidden]{display:none}
+h2{font-size:1.25rem;margin:0 0 10px}h3{font-size:1.05rem;margin:0 0 8px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+@media(max-width:400px){.kpi b{font-size:1.25rem}}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.kpi b{display:block;font-size:1.5rem;font-variant-numeric:tabular-nums}
+.kpi span{color:var(--muted);font-size:.9rem}
+.kpi.g b{color:var(--gain)}.kpi.r b{color:var(--bad)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.btn{font:inherit;font-weight:700;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:9px 14px;cursor:pointer;min-height:44px}
+.btn:hover{border-color:var(--acc)}.btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn.dan{color:var(--bad)}.btn.sm{padding:4px 10px;min-height:36px;font-size:.9rem}
+select,input,textarea{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-height:44px;width:100%}
+label{display:flex;flex-direction:column;gap:4px;font-size:.92rem;color:var(--ink2)}
+.aide{font-size:.82rem;color:var(--muted)}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.93rem;font-variant-numeric:tabular-nums}
+th,td{padding:9px 7px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--muted);font-size:.85rem}td.n,th.n{text-align:right;white-space:nowrap}
+.pos{color:var(--gain)}.neg{color:var(--bad)}
+.empty{color:var(--muted);text-align:center;padding:18px}
+.note{font-size:.88rem;color:var(--muted)}
+.banner{background:var(--accT);border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:.93rem}
+.banner.w{background:var(--warnT);color:var(--warn)}
+.gauge{height:14px;border-radius:99px;background:var(--line);overflow:hidden;margin:8px 0}
+.gauge i{display:block;height:100%;background:var(--gain)}
+svg.chart{width:100%;height:200px;display:block}
+svg.chart text{fill:var(--muted);font-size:20px}
+dialog{border:0;border-radius:16px;padding:0;max-width:560px;width:calc(100% - 24px);background:var(--card);color:var(--ink)}
+dialog::backdrop{background:rgba(10,20,40,.55)}
+dialog form{padding:18px;display:grid;gap:12px}
+.fgrid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+#toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 16px;border-radius:12px;display:none;z-index:30}
+details summary{cursor:pointer;font-weight:700;min-height:36px}
+footer{max-width:1100px;margin:0 auto;padding:8px 16px 28px;font-size:.88rem;color:var(--muted)}
+@media (max-width:640px){
+ table.resp thead{display:none}table.resp,table.resp tbody{display:block}
+ table.resp tr{display:grid;grid-template-columns:1fr 1fr;gap:2px 12px;padding:10px 0;border-bottom:1px solid var(--line)}
+ table.resp td{border:0;padding:3px 0;text-align:left}
+ table.resp td::before{content:attr(data-l);display:block;font-size:.75rem;font-weight:700;color:var(--muted);text-transform:uppercase}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Aller au contenu</a>
+<header>
+ <div class="top">
+  <img src="icons/icon.svg" alt="">
+  <h1>Contavo<small>Vos comptes du quotidien, sur votre appareil</small></h1>
+ </div>
+ <nav aria-label="Rubriques" id="nav">
+  <a href="#accueil">Accueil</a><a href="#livraisons">Livraisons</a><a href="#vehicules">Véhicules</a>
+  <a href="#salaire">Salaire</a><a href="#prets">Prêts &amp; assurances</a><a href="#donnees">Mes données</a><a href="#apropos">À propos</a>
+ </nav>
+</header>
+
+<main id="main" tabindex="-1">
+<section id="v-accueil" aria-labelledby="t-acc">
+ <h2 id="t-acc">Accueil</h2>
+ <div class="banner">🔒 Vos données sont enregistrées <b>uniquement sur cet appareil</b>. Aucun compte, aucune publicité, aucun envoi sur Internet.</div>
+ <div id="backupWarn"></div>
+ <div class="grid" id="accKpis"></div>
+ <div class="panel" style="margin-top:14px"><h3>Pour commencer</h3>
+  <ol class="note" style="margin:0;padding-left:18px">
+   <li>Ajoutez vos véhicules (rubrique Véhicules) : la consommation et le prix de l'énergie servent à calculer le coût de chaque trajet.</li>
+   <li>Notez vos livraisons, vos dépenses, vos bulletins de salaire, vos prêts et assurances.</li>
+   <li>Faites régulièrement une sauvegarde (rubrique Mes données) : si vous désinstallez l'application ou videz le navigateur, les données sont perdues.</li>
+  </ol></div>
+</section>
+
+<section id="v-livraisons" hidden aria-labelledby="t-liv">
+ <h2 id="t-liv">Livraisons entre particuliers</h2>
+ <div class="row">
+  <label style="flex:1;min-width:160px">Période<select id="livPer"></select></label>
+  <label style="flex:1;min-width:160px">Objectif net du mois (€)<input type="text" inputmode="decimal" autocomplete="off" id="objectif"></label>
+ </div>
+ <div class="grid" id="livKpis"></div>
+ <div class="panel" style="margin-top:14px" id="livObj"></div>
+ <div class="panel"><h3>Net par mois</h3><div id="livChart"></div></div>
+ <div class="panel"><h3>Par plateforme</h3><div class="tbl" id="livPlat"></div></div>
+ <div class="row"><button class="btn pri" data-add="livraisons">+ Ajouter une livraison</button><button class="btn" data-csv="livraisons">Exporter (CSV)</button></div>
+ <div class="panel tbl" id="livTbl"></div>
+ <p class="note">Coût d'un trajet = km × (consommation × prix de l'énergie ÷ 100 + usure au km) du véhicule choisi. Les livraisons annulées ne sont pas comptées. Pour vos obligations fiscales, consultez impots.gouv.fr : cette application ne donne pas de conseil fiscal.</p>
+</section>
+
+<section id="v-vehicules" hidden aria-labelledby="t-veh">
+ <h2 id="t-veh">Véhicules et dépenses</h2>
+ <div class="row"><button class="btn pri" data-add="vehicules">+ Ajouter un véhicule</button></div>
+ <div class="panel tbl" id="vehTbl"></div>
+ <div class="row"><label style="flex:1;min-width:160px">Année<select id="vehAn"></select></label></div>
+ <div class="grid" id="vehKpis"></div>
+ <div class="row" style="margin-top:14px"><button class="btn pri" data-add="depenses">+ Ajouter une dépense</button><button class="btn" data-add="compteurs">+ Relevé de compteur</button><button class="btn" data-csv="depenses">Exporter (CSV)</button></div>
+ <div class="panel"><h3>Dépenses par catégorie</h3><div class="tbl" id="vehCat"></div></div>
+ <div class="panel tbl" id="depTbl"></div>
+ <details class="panel"><summary>Relevés de compteur</summary><div class="tbl" id="cptTbl"></div></details>
+ <p class="note">Coût réel au km = total des dépenses de l'année ÷ km parcourus (écart entre le premier et le dernier relevé de compteur de l'année).</p>
+</section>
+
+<section id="v-salaire" hidden aria-labelledby="t-sal">
+ <h2 id="t-sal">Bulletins de salaire</h2>
+ <div class="row"><label style="flex:1;min-width:160px">Année<select id="salAn"></select></label></div>
+ <div class="grid" id="salKpis"></div>
+ <div class="panel" style="margin-top:14px"><h3>Net payé par mois</h3><div id="salChart"></div></div>
+ <div class="row"><button class="btn pri" data-add="bulletins">+ Ajouter un bulletin</button><button class="btn" data-csv="bulletins">Exporter (CSV)</button></div>
+ <div class="panel tbl" id="salTbl"></div>
+ <p class="note">Recopiez les montants de votre bulletin : « Net à payer avant impôt sur le revenu », « Impôt sur le revenu prélevé à la source », « Net payé ». Le taux horaire est calculé sur le net avant impôt.</p>
+</section>
+
+<section id="v-prets" hidden aria-labelledby="t-pre">
+ <h2 id="t-pre">Prêts et assurances</h2>
+ <div class="grid" id="preKpis"></div>
+ <div class="row" style="margin-top:14px"><button class="btn pri" data-add="prets">+ Ajouter un prêt</button><button class="btn" data-csv="prets">Exporter (CSV)</button></div>
+ <div id="preList"></div>
+ <div class="row"><button class="btn pri" data-add="assurances">+ Ajouter une assurance</button><button class="btn" data-csv="assurances">Exporter (CSV)</button></div>
+ <div class="panel tbl" id="assTbl"></div>
+ <p class="note">Mensualité calculée pour un prêt amortissable à taux fixe et échéances constantes. Les chiffres sont des estimations : seul le tableau d'amortissement de votre banque fait foi.</p>
+</section>
+
+<section id="v-donnees" hidden aria-labelledby="t-don">
+ <h2 id="t-don">Mes données</h2>
+ <div class="panel">
+  <h3>Sauvegarder</h3>
+  <p class="note">Le fichier de sauvegarde contient toutes vos données. Gardez-le en lieu sûr (il peut contenir des informations sur vos revenus et vos prêts).</p>
+  <div class="row"><button class="btn pri" id="exp">Télécharger une sauvegarde</button></div>
+  <p class="note" id="lastExp"></p>
+ </div>
+ <div class="panel">
+  <h3>Restaurer</h3>
+  <p class="note">Remplace les données de cet appareil par celles d'une sauvegarde Contavo (fichier .json).</p>
+  <label>Fichier de sauvegarde<input type="file" id="imp" accept="application/json,.json"></label>
+ </div>
+ <div class="panel">
+  <h3>Apparence</h3>
+  <label>Thème<select id="theme"><option value="auto">Automatique</option><option value="light">Clair</option><option value="dark">Sombre</option></select></label>
+ </div>
+ <div class="panel">
+  <h3>Tout effacer</h3>
+  <p class="note">Supprime définitivement toutes les données de cet appareil.</p>
+  <button class="btn dan" id="wipe">Effacer toutes mes données</button>
+ </div>
+</section>
+
+<section id="v-apropos" hidden aria-labelledby="t-apr">
+ <h2 id="t-apr">À propos</h2>
+ <div class="panel">
+  <p>Contavo est une application gratuite, sans publicité et sans compte. Elle fonctionne hors connexion.</p>
+  <p><b>Vie privée :</b> aucune donnée n'est collectée par l'éditeur. Tout reste dans la mémoire de votre appareil.</p>
+  <p>Les calculs sont fournis à titre indicatif et ne constituent ni un conseil financier, ni un conseil fiscal, ni un conseil juridique.</p>
+  <p><a href="confidentialite.html">Politique de confidentialité</a> · <a href="mentions-legales.html">Mentions légales</a> · <a href="conditions.html">Conditions d'utilisation</a></p>
+  <p class="note">Version <span id="ver"></span></p>
+ </div>
+</section>
+</main>
+
+<footer><a href="confidentialite.html">Confidentialité</a> · <a href="mentions-legales.html">Mentions légales</a> · <a href="conditions.html">Conditions</a></footer>
+
+<dialog id="dlg" aria-labelledby="dlgT"><form method="dialog" id="dlgF" novalidate>
+ <h2 id="dlgT"></h2><div class="fgrid" id="dlgB"></div>
+ <p class="note" id="dlgE" role="alert" style="color:var(--bad);margin:0"></p>
+ <div class="row" style="margin:0"><button class="btn pri" value="ok" id="dlgOk">Enregistrer</button><button class="btn" value="cancel" formnovalidate>Annuler</button></div>
+</form></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+<datalist id="dl-plat"><option value="Shopopop"><option value="Yper"><option value="Uber Eats"><option value="Deliveroo"><option value="Stuart"><option value="Autre"></datalist>
+
+<script>
+"use strict";
+const VERSION='1.0.0', KEY='contavo.v1';
+const def=()=>({v:1,settings:{theme:'auto',objectif:0,lastExport:null},vehicules:[],livraisons:[],depenses:[],compteurs:[],bulletins:[],prets:[],assurances:[]});
+const COLS=['vehicules','livraisons','depenses','compteurs','bulletins','prets','assurances'];
+let S=load();
+function load(){try{const r=localStorage.getItem(KEY);if(r)return clean(JSON.parse(r))}catch(e){}return def()}
+function clean(d){const o=def();if(!d||typeof d!=='object')return o;if(d.settings&&typeof d.settings==='object')Object.assign(o.settings,d.settings);
+ for(const c of COLS)if(Array.isArray(d[c]))o[c]=d[c].filter(x=>x&&typeof x==='object'&&typeof x.id==='string');return o}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast("Impossible d'enregistrer sur cet appareil (mémoire pleine ou navigation privée).")}}
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const num=v=>{const n=parseFloat(String(v??'').replace(/\s/g,'').replace(',','.'));return isFinite(n)?n:0};
+const eur=n=>(isFinite(n)?n:0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});
+const fmt=(n,d=1)=>(isFinite(n)?n:0).toLocaleString('fr-FR',{maximumFractionDigits:d});
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const dfr=s=>{if(!s)return'';const[y,m,d]=s.split('-');return d?`${d}/${m}/${y}`:`${m}/${y}`};
+const MOIS=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+const mlab=ym=>{const[y,m]=ym.split('-');return MOIS[+m-1]+' '+y};
+const today=()=>new Date().toISOString().slice(0,10);
+const $=id=>document.getElementById(id);
+function toast(t){const e=$('toast');e.textContent=t;e.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>e.style.display='none',3500)}
+
+/* ---------- Schémas de saisie ---------- */
+const optVeh=()=>[['','— Aucun —'],...S.vehicules.map(v=>[v.id,v.nom])];
+const SCH={
+ vehicules:{t:'Véhicule',f:[
+  {k:'nom',l:'Nom du véhicule',req:1,ph:'Ex. Voiture électrique'},
+  {k:'energie',l:'Énergie',o:[['electrique','Électrique'],['essence','Essence'],['diesel','Diesel'],['autre','Autre']]},
+  {k:'conso',l:'Consommation (kWh ou litres / 100 km)',n:1},
+  {k:'prix',l:"Prix de l'énergie (€ par kWh ou par litre)",n:1},
+  {k:'usure',l:'Usure et entretien (€ par km)',n:1,a:"Laissez 0 si vous ne savez pas."}]},
+ livraisons:{t:'Livraison',f:[
+  {k:'date',l:'Date',d:1,req:1},{k:'plateforme',l:'Plateforme',list:'dl-plat',ph:'Ex. Shopopop'},
+  {k:'magasin',l:'Magasin'},{k:'client',l:'Ville du client'},
+  {k:'gain',l:'Rémunération (€)',n:1},{k:'pourboire',l:'Pourboire (€)',n:1},
+  {k:'km',l:'Km parcourus',n:1},{k:'minutes',l:'Durée (minutes)',n:1},
+  {k:'vehId',l:'Véhicule',o:optVeh},
+  {k:'statut',l:'Statut',o:[['effectuee','Effectuée'],['prevue','Prévue'],['annulee','Annulée']]}]},
+ depenses:{t:'Dépense véhicule',f:[
+  {k:'date',l:'Date',d:1,req:1},{k:'vehId',l:'Véhicule',o:optVeh},
+  {k:'cat',l:'Catégorie',o:[['energie','Recharge / carburant'],['entretien','Entretien / réparation'],['assurance','Assurance'],['credit','Crédit / location'],['peage','Péage / stationnement'],['autre','Autre']]},
+  {k:'montant',l:'Montant (€)',n:1,req:1},{k:'qte',l:'kWh ou litres (facultatif)',n:1},{k:'note',l:'Note'}]},
+ compteurs:{t:'Relevé de compteur',f:[{k:'vehId',l:'Véhicule',o:optVeh,req:1},{k:'date',l:'Date',d:1,req:1},{k:'km',l:'Kilométrage affiché',n:1,req:1}]},
+ bulletins:{t:'Bulletin de salaire',f:[
+  {k:'mois',l:'Mois',m:1,req:1},{k:'employeur',l:'Employeur'},{k:'heures',l:'Heures payées',n:1},
+  {k:'brut',l:'Salaire brut (€)',n:1},{k:'netAv',l:'Net à payer avant impôt (€)',n:1},
+  {k:'pas',l:'Impôt prélevé à la source (€)',n:1},{k:'net',l:'Net payé (€)',n:1},{k:'primes',l:'Dont primes (€)',n:1}]},
+ prets:{t:'Prêt',f:[
+  {k:'nom',l:'Nom du prêt',req:1,ph:'Ex. Prêt auto'},{k:'preteur',l:'Organisme'},
+  {k:'type',l:'Type',o:[['immobilier','Immobilier'],['auto','Auto / moto'],['conso','Consommation'],['travaux','Travaux'],['autre','Autre']]},
+  {k:'capital',l:'Montant emprunté (€)',n:1,req:1},{k:'taux',l:'Taux annuel hors assurance (%)',n:1},
+  {k:'duree',l:'Durée (mois)',n:1,req:1},{k:'debut',l:'Date de la 1re échéance',d:1,req:1},
+  {k:'assur',l:'Assurance emprunteur par mois (€)',n:1},{k:'frais',l:'Frais de dossier et garantie (€)',n:1}]},
+ assurances:{t:'Assurance',f:[
+  {k:'nom',l:'Nom',req:1,ph:'Ex. Habitation'},{k:'assureur',l:'Assureur'},
+  {k:'type',l:'Type',o:[['auto','Auto / moto'],['habitation','Habitation'],['sante','Santé / mutuelle'],['prevoyance','Prévoyance'],['emprunteur','Emprunteur (payée à part)'],['autre','Autre']]},
+  {k:'montant',l:'Montant de la cotisation (€)',n:1,req:1},
+  {k:'freq',l:'Payée',o:[['mois','Chaque mois'],['trimestre','Chaque trimestre'],['semestre','Chaque semestre'],['an','Une fois par an']]},
+  {k:'echeance',l:'Date anniversaire du contrat',d:1}]}
+};
+const LAB=(c,k,v)=>{const f=SCH[c].f.find(x=>x.k===k);const o=f&&(typeof f.o==='function'?f.o():f.o);const p=o&&o.find(x=>x[0]===v);return p?p[1]:v};
+
+let edit=null;
+function openForm(c,id){
+ const it=id?S[c].find(x=>x.id===id):null;edit={c,id};
+ $('dlgT').textContent=(it?'Modifier : ':'Ajouter : ')+SCH[c].t.toLowerCase();$('dlgE').textContent='';
+ $('dlgB').innerHTML=SCH[c].f.map(f=>{const v=it?it[f.k]:(f.d?today():f.m?today().slice(0,7):(f.k==='statut'?'effectuee':''));const idf='f_'+f.k;
+  const lab=`${esc(f.l)}${f.req?' <span aria-hidden="true">*</span>':''}`;
+  let inp;
+  if(f.o){const o=typeof f.o==='function'?f.o():f.o;inp=`<select id="${idf}" name="${f.k}"${f.req?' required':''}>${o.map(([a,b])=>`<option value="${esc(a)}"${String(v??'')===a?' selected':''}>${esc(b)}</option>`).join('')}</select>`}
+  else{const ty=f.d?'date':f.m?'month':'text';inp=`<input id="${idf}" name="${f.k}" type="${ty}"${f.n?' inputmode="decimal" autocomplete="off"':''}${f.list?` list="${f.list}"`:''}${f.ph?` placeholder="${esc(f.ph)}"`:''}${f.req?' required':''} maxlength="120" value="${esc(v??'')}">`}
+  return `<label for="${idf}">${lab}${inp}${f.a?`<span class="aide">${esc(f.a)}</span>`:''}</label>`}).join('');
+ $('dlg').showModal();setTimeout(()=>{const x=$('dlgB').querySelector('input,select');x&&x.focus()},30);
+}
+$('dlgOk').addEventListener('click',e=>{
+ e.preventDefault();const{c,id}=edit;const o={};let bad='';
+ for(const f of SCH[c].f){const el=$('f_'+f.k);let v=el.value.trim();
+  if(f.req&&v===''){bad=`Le champ « ${f.l} » est obligatoire.`;break}
+  if(f.n&&v!==''){if(!/^-?[\d\s]*[.,]?\d*$/.test(v)){bad=`« ${f.l} » doit être un nombre (ex. 12,50).`;break}v=num(v);if(v<0){bad=`« ${f.l} » ne peut pas être négatif.`;break}}
+  o[f.k]=v}
+ if(c==='prets'&&!bad&&!(num(o.duree)>=1&&num(o.duree)<=600))bad='La durée doit être comprise entre 1 et 600 mois.';
+ if(bad){$('dlgE').textContent=bad;return}
+ if(id)Object.assign(S[c].find(x=>x.id===id),o);else S[c].push({id:uid(),...o});
+ save();$('dlg').close();render();toast('Enregistré');
+});
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.add)openForm(b.dataset.add);
+ if(b.dataset.ed){const[c,id]=b.dataset.ed.split(':');openForm(c,id)}
+ if(b.dataset.del){const[c,id]=b.dataset.del.split(':');if(confirm('Supprimer cette ligne ? Cette action est définitive.')){S[c]=S[c].filter(x=>x.id!==id);if(c==='vehicules')for(const k of['livraisons','depenses','compteurs'])S[k].forEach(x=>{if(x.vehId===id)x.vehId=''});save();render();toast('Supprimé')}}
+ if(b.dataset.csv)csv(b.dataset.csv);
+ if(b.dataset.ech){const p=S.prets.find(x=>x.id===b.dataset.ech);const t=$('ech-'+p.id);t.hidden=!t.hidden;if(!t.hidden)t.innerHTML=echTable(p);b.setAttribute('aria-expanded',String(!t.hidden))}
+});
+const acts=(c,id)=>`<td class="n"><button class="btn sm" data-ed="${c}:${id}" aria-label="Modifier">✏️</button> <button class="btn sm dan" data-del="${c}:${id}" aria-label="Supprimer">🗑️</button></td>`;
+function table(cols,rows,c,emptyMsg){
+ if(!rows.length)return `<p class="empty">${emptyMsg}</p>`;
+ return `<table class="resp"><thead><tr>${cols.map(x=>`<th scope="col"${x.n?' class="n"':''}>${x.l}</th>`).join('')}${c?'<th class="n"><span class="sr">Actions</span></th>':''}</tr></thead><tbody>${
+  rows.map(r=>`<tr>${cols.map(x=>`<td data-l="${esc(x.l)}"${x.n?' class="n"':''}>${x.v(r)}</td>`).join('')}${c?acts(c,r.id):''}</tr>`).join('')}</tbody></table>`}
+function chart(el,items,label){
+ if(!items.length){el.innerHTML='<p class="empty">Pas encore de données.</p>';return}
+ const W=640,H=220,P=30,max=Math.max(1,...items.map(i=>Math.abs(i.v))),bw=Math.min(90,(W-P)/items.length);
+ const hasNeg=items.some(i=>i.v<0),base=hasNeg?H/2:H-P;
+ el.innerHTML=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(label+' : '+items.map(i=>i.l+' '+eur(i.v)).join(', '))}">${items.map((it,k)=>{const h=Math.abs(it.v)/max*(hasNeg?H/2-P:H-2*P);const x=P/2+k*bw+bw*.15;const y=it.v>=0?base-h:base;
+  return `<rect x="${x}" y="${y}" width="${bw*.7}" height="${h}" rx="4" fill="${it.v>=0?'var(--gain)':'var(--bad)'}"><title>${esc(it.l)} : ${eur(it.v)}</title></rect><text x="${x+bw*.35}" y="${H-6}" text-anchor="middle">${esc(it.l.split(' ')[0])}</text>`}).join('')}<line x1="0" x2="${W}" y1="${base}" y2="${base}" stroke="var(--line)"/></svg>`}
+const opts=(sel,list,cur)=>{sel.innerHTML=list.map(([a,b])=>`<option value="${a}"${a===cur?' selected':''}>${esc(b)}</option>`).join('')};
+const kpi=(l,v,cls='')=>`<div class="kpi ${cls}"><span>${l}</span><b>${v}</b></div>`;
+
+/* ---------- Calculs ---------- */
+const veh=id=>S.vehicules.find(v=>v.id===id);
+const coutKm=v=>v?num(v.conso)*num(v.prix)/100+num(v.usure):0;
+const livCout=l=>num(l.km)*coutKm(veh(l.vehId));
+const livNet=l=>num(l.gain)+num(l.pourboire)-livCout(l);
+function mensualite(p){const C=num(p.capital),n=Math.round(num(p.duree)),r=num(p.taux)/1200;if(!n)return 0;return r?C*r/(1-Math.pow(1+r,-n)):C/n}
+const addM=(s,k)=>{const d=new Date(s+'T12:00:00');const day=d.getDate();d.setDate(1);d.setMonth(d.getMonth()+k);const last=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();d.setDate(Math.min(day,last));return d.toISOString().slice(0,10)};
+function payees(p){const n=Math.round(num(p.duree));const t=today();let k=0;while(k<n&&addM(p.debut,k)<=t)k++;return k}
+function crd(p,k){const C=num(p.capital),r=num(p.taux)/1200,M=mensualite(p);if(k>=Math.round(num(p.duree)))return 0;return r?C*Math.pow(1+r,k)-M*(Math.pow(1+r,k)-1)/r:C-M*k}
+const FREQ={mois:12,trimestre:4,semestre:2,an:1};
+const annuel=a=>num(a.montant)*(FREQ[a.freq]||12);
+function prochaine(s){if(!s)return'';let d=s;const t=today();let g=0;while(d<t&&g++<200)d=addM(d,12);return d}
+function echTable(p){const n=Math.round(num(p.duree)),r=num(p.taux)/1200,M=mensualite(p);let C=num(p.capital),rows=[];
+ for(let k=0;k<n;k++){const i=C*r,a=M-i;C=Math.max(0,C-a);rows.push(`<tr><td>${k+1}</td><td>${dfr(addM(p.debut,k))}</td><td class="n">${eur(M)}</td><td class="n">${eur(a)}</td><td class="n">${eur(i)}</td><td class="n">${eur(num(p.assur))}</td><td class="n">${eur(C)}</td></tr>`)}
+ return `<table><caption class="sr">Échéancier ${esc(p.nom)}</caption><thead><tr><th>N°</th><th>Date</th><th class="n">Mensualité</th><th class="n">Capital</th><th class="n">Intérêts</th><th class="n">Assurance</th><th class="n">Reste dû</th></tr></thead><tbody>${rows.join('')}</tbody></table>`}
+
+/* ---------- Rendus ---------- */
+function rAccueil(){
+ const ym=today().slice(0,7),ls=S.livraisons.filter(l=>l.statut!=='annulee'&&String(l.date).startsWith(ym));
+ const an=ym.slice(0,4),dep=S.depenses.filter(d=>String(d.date).startsWith(an)).reduce((s,d)=>s+num(d.montant),0);
+ const b=[...S.bulletins].sort((a,c)=>String(c.mois).localeCompare(a.mois))[0];
+ const ch=S.prets.filter(p=>payees(p)<Math.round(num(p.duree))).reduce((s,p)=>s+mensualite(p)+num(p.assur),0)+S.assurances.reduce((s,a)=>s+annuel(a)/12,0);
+ $('accKpis').innerHTML=kpi('Livraisons : net de '+MOIS[+ym.slice(5)-1],eur(ls.reduce((s,l)=>s+livNet(l),0)),'g')+kpi('Dépenses véhicules '+an,eur(dep))+kpi('Dernier net payé'+(b?' ('+mlab(b.mois)+')':''),b?eur(num(b.net)):'—')+kpi('Prêts + assurances par mois',eur(ch));
+ const le=S.settings.lastExport,has=COLS.some(c=>S[c].length),old=!le||(Date.now()-new Date(le))>30*864e5;
+ $('backupWarn').innerHTML=has&&old?`<div class="banner w">💾 ${le?'Dernière sauvegarde il y a plus de 30 jours.':'Aucune sauvegarde pour l’instant.'} <a href="#donnees">Sauvegarder mes données</a></div>`:'';
+}
+function rLiv(){
+ const per=$('livPer'),months=[...new Set(S.livraisons.map(l=>String(l.date).slice(0,7)))].filter(Boolean).sort().reverse();
+ const cur=per.value||'mois';opts(per,[['mois','Ce mois-ci'],['tout','Depuis le début'],...months.map(m=>[m,mlab(m)])],cur);
+ const ym=per.value==='mois'?today().slice(0,7):per.value;
+ const ls=S.livraisons.filter(l=>per.value==='tout'||String(l.date).startsWith(ym)),ok=ls.filter(l=>l.statut==='effectuee'||!l.statut);
+ const g=ok.reduce((s,l)=>s+num(l.gain)+num(l.pourboire),0),c=ok.reduce((s,l)=>s+livCout(l),0),km=ok.reduce((s,l)=>s+num(l.km),0),mn=ok.reduce((s,l)=>s+num(l.minutes),0);
+ $('livKpis').innerHTML=kpi('Livraisons effectuées',ok.length)+kpi('Gains (avec pourboires)',eur(g),'g')+kpi('Coût des trajets',eur(c),'r')+kpi('Net',eur(g-c),g-c>=0?'g':'r')+kpi('Km',fmt(km))+kpi('Net par heure',mn?eur((g-c)/(mn/60)):'—');
+ const obj=num(S.settings.objectif);$('objectif').value=obj||'';
+ const tm=today().slice(0,7),netM=S.livraisons.filter(l=>(l.statut==='effectuee'||!l.statut)&&String(l.date).startsWith(tm)).reduce((s,l)=>s+livNet(l),0);
+ $('livObj').innerHTML=obj?`<h3>Objectif de ${MOIS[+tm.slice(5)-1]}</h3><div class="gauge" role="progressbar" aria-valuemin="0" aria-valuemax="${obj}" aria-valuenow="${Math.max(0,netM).toFixed(0)}" aria-label="Progression de l'objectif"><i style="width:${Math.min(100,Math.max(0,netM/obj*100))}%"></i></div><p class="note" style="margin:0">${eur(netM)} sur ${eur(obj)} (${fmt(netM/obj*100,0)} %)</p>`:'<p class="note" style="margin:0">Indiquez un objectif net mensuel ci-dessus pour suivre votre progression.</p>';
+ const byM={};S.livraisons.filter(l=>l.statut==='effectuee'||!l.statut).forEach(l=>{const m=String(l.date).slice(0,7);byM[m]=(byM[m]||0)+livNet(l)});
+ chart($('livChart'),Object.keys(byM).sort().slice(-12).map(m=>({l:mlab(m),v:byM[m]})),'Net des livraisons par mois');
+ const byP={};ok.forEach(l=>{const p=l.plateforme||'Non précisée';(byP[p]=byP[p]||{p,n:0,g:0,c:0});byP[p].n++;byP[p].g+=num(l.gain)+num(l.pourboire);byP[p].c+=livCout(l)});
+ $('livPlat').innerHTML=table([{l:'Plateforme',v:r=>esc(r.p)},{l:'Livraisons',n:1,v:r=>r.n},{l:'Gains',n:1,v:r=>eur(r.g)},{l:'Net',n:1,v:r=>eur(r.g-r.c)},{l:'Net moyen',n:1,v:r=>eur((r.g-r.c)/r.n)}],Object.values(byP),null,'Aucune livraison sur la période.');
+ $('livTbl').innerHTML=table([{l:'Date',v:r=>dfr(r.date)},{l:'Plateforme',v:r=>esc(r.plateforme)},{l:'Trajet',v:r=>esc([r.magasin,r.client].filter(Boolean).join(' → '))},{l:'Statut',v:r=>esc(LAB('livraisons','statut',r.statut||'effectuee'))},{l:'Gain',n:1,v:r=>eur(num(r.gain)+num(r.pourboire))},{l:'Coût',n:1,v:r=>eur(livCout(r))},{l:'Net',n:1,v:r=>`<b class="${livNet(r)>=0?'pos':'neg'}">${eur(livNet(r))}</b>`}],
+  [...ls].sort((a,b)=>String(b.date).localeCompare(a.date)),'livraisons','Aucune livraison. Ajoutez votre première livraison.');
+}
+function rVeh(){
+ $('vehTbl').innerHTML=table([{l:'Véhicule',v:r=>esc(r.nom)},{l:'Énergie',v:r=>esc(LAB('vehicules','energie',r.energie))},{l:'Conso / 100 km',n:1,v:r=>fmt(num(r.conso))},{l:'Prix énergie',n:1,v:r=>eur(num(r.prix))},{l:'Coût estimé / km',n:1,v:r=>eur(coutKm(r))}],S.vehicules,'vehicules','Aucun véhicule.');
+ const ans=[...new Set([today().slice(0,4),...S.depenses.map(d=>String(d.date).slice(0,4)),...S.compteurs.map(d=>String(d.date).slice(0,4))])].filter(Boolean).sort().reverse();
+ const sel=$('vehAn'),cur=sel.value||ans[0];opts(sel,ans.map(a=>[a,a]),cur);const an=sel.value;
+ const ds=S.depenses.filter(d=>String(d.date).startsWith(an)),tot=ds.reduce((s,d)=>s+num(d.montant),0);
+ let km=0;S.vehicules.concat([{id:''}]).forEach(v=>{const r=S.compteurs.filter(c=>(c.vehId||'')===v.id&&String(c.date).startsWith(an)).map(c=>num(c.km));if(r.length>1)km+=Math.max(...r)-Math.min(...r)});
+ $('vehKpis').innerHTML=kpi('Dépenses '+an,eur(tot),'r')+kpi('Km relevés '+an,km?fmt(km,0):'—')+kpi('Coût réel au km',km?eur(tot/km):'—')+kpi('Par mois en moyenne',eur(tot/(an===today().slice(0,4)?(+today().slice(5,7)):12)));
+ const byC={};ds.forEach(d=>{byC[d.cat||'autre']=(byC[d.cat||'autre']||0)+num(d.montant)});
+ $('vehCat').innerHTML=table([{l:'Catégorie',v:r=>esc(LAB('depenses','cat',r[0]))},{l:'Total',n:1,v:r=>eur(r[1])},{l:'Part',n:1,v:r=>fmt(tot?r[1]/tot*100:0,0)+' %'}],Object.entries(byC).sort((a,b)=>b[1]-a[1]),null,'Aucune dépense sur cette année.');
+ $('depTbl').innerHTML=table([{l:'Date',v:r=>dfr(r.date)},{l:'Véhicule',v:r=>esc(veh(r.vehId)?.nom||'—')},{l:'Catégorie',v:r=>esc(LAB('depenses','cat',r.cat))},{l:'Note',v:r=>esc(r.note)},{l:'Montant',n:1,v:r=>eur(num(r.montant))}],[...ds].sort((a,b)=>String(b.date).localeCompare(a.date)),'depenses','Aucune dépense.');
+ $('cptTbl').innerHTML=table([{l:'Date',v:r=>dfr(r.date)},{l:'Véhicule',v:r=>esc(veh(r.vehId)?.nom||'—')},{l:'Km',n:1,v:r=>fmt(num(r.km),0)}],[...S.compteurs].sort((a,b)=>String(b.date).localeCompare(a.date)),'compteurs','Aucun relevé.');
+}
+function rSal(){
+ const ans=[...new Set([today().slice(0,4),...S.bulletins.map(b=>String(b.mois).slice(0,4))])].filter(Boolean).sort().reverse();
+ const sel=$('salAn'),cur=sel.value||ans[0];opts(sel,ans.map(a=>[a,a]),cur);const an=sel.value;
+ const bs=S.bulletins.filter(b=>String(b.mois).startsWith(an)).sort((a,b)=>String(a.mois).localeCompare(b.mois));
+ const s=k=>bs.reduce((t,b)=>t+num(b[k]),0),h=s('heures');
+ $('salKpis').innerHTML=kpi('Brut cumulé',eur(s('brut')))+kpi('Net avant impôt cumulé',eur(s('netAv')))+kpi('Impôt prélevé',eur(s('pas')),'r')+kpi('Net payé cumulé',eur(s('net')),'g')+kpi('Net payé moyen / mois',bs.length?eur(s('net')/bs.length):'—')+kpi('Taux horaire net moyen',h?eur(s('netAv')/h):'—');
+ chart($('salChart'),bs.map(b=>({l:mlab(b.mois),v:num(b.net)})),'Net payé par mois');
+ const all=[...S.bulletins].sort((a,b)=>String(a.mois).localeCompare(b.mois));
+ const prev=b=>{const i=all.indexOf(b);return i>0?all[i-1]:null};
+ $('salTbl').innerHTML=table([{l:'Mois',v:r=>mlab(r.mois)},{l:'Employeur',v:r=>esc(r.employeur)},{l:'Heures',n:1,v:r=>fmt(num(r.heures),2)},{l:'Brut',n:1,v:r=>eur(num(r.brut))},{l:'Net avant impôt',n:1,v:r=>eur(num(r.netAv))},{l:'Impôt',n:1,v:r=>eur(num(r.pas))},{l:'Net payé',n:1,v:r=>`<b>${eur(num(r.net))}</b>`},
+  {l:'Écart / mois préc.',n:1,v:r=>{const p=prev(r);if(!p)return'—';const d=num(r.net)-num(p.net);return `<span class="${d>=0?'pos':'neg'}">${d>=0?'+':''}${eur(d)}</span>`}},{l:'Taux horaire net',n:1,v:r=>num(r.heures)?eur(num(r.netAv)/num(r.heures)):'—'}],[...bs].reverse(),'bulletins','Aucun bulletin pour cette année.');
+}
+function rPre(){
+ const act=S.prets.filter(p=>payees(p)<Math.round(num(p.duree)));
+ const mens=act.reduce((s,p)=>s+mensualite(p),0),ass=act.reduce((s,p)=>s+num(p.assur),0),crdT=S.prets.reduce((s,p)=>s+crd(p,payees(p)),0),assM=S.assurances.reduce((s,a)=>s+annuel(a)/12,0);
+ $('preKpis').innerHTML=kpi('Mensualités en cours',eur(mens))+kpi('Assurances emprunteur / mois',eur(ass))+kpi('Capital restant dû',eur(crdT),'r')+kpi('Autres assurances / mois',eur(assM))+kpi('Total par mois',eur(mens+ass+assM),'r');
+ $('preList').innerHTML=S.prets.length?S.prets.map(p=>{const n=Math.round(num(p.duree)),k=payees(p),M=mensualite(p),it=M*n-num(p.capital),fin=addM(p.debut,n-1);
+  return `<div class="panel"><div class="row" style="justify-content:space-between;margin:0"><h3 style="margin:0">${esc(p.nom)}</h3><div>${acts('prets',p.id).replace(/^<td class="n">|<\/td>$/g,'')}</div></div>
+  <p class="note" style="margin:4px 0 10px">${esc([p.preteur,LAB('prets','type',p.type)].filter(Boolean).join(' · '))} · ${eur(num(p.capital))} à ${fmt(num(p.taux),2)} % sur ${n} mois</p>
+  <div class="grid">${kpi('Mensualité hors assurance',eur(M))+kpi('Échéances payées',k+' / '+n)+kpi('Reste dû',eur(crd(p,k)),'r')+kpi('Fin du prêt',dfr(fin))+kpi('Coût total (intérêts + assurance + frais)',eur(it+num(p.assur)*n+num(p.frais)))}</div>
+  <div class="gauge" aria-hidden="true"><i style="width:${n?k/n*100:0}%"></i></div>
+  <button class="btn sm" data-ech="${p.id}" aria-expanded="false" aria-controls="ech-${p.id}">Afficher / masquer l'échéancier</button><div class="tbl" id="ech-${p.id}" hidden></div></div>`}).join(''):'<p class="panel empty">Aucun prêt.</p>';
+ $('assTbl').innerHTML=table([{l:'Assurance',v:r=>esc(r.nom)},{l:'Assureur',v:r=>esc(r.assureur)},{l:'Type',v:r=>esc(LAB('assurances','type',r.type))},{l:'Cotisation',n:1,v:r=>eur(num(r.montant))+' / '+esc(LAB('assurances','freq',r.freq||'mois')).replace('Chaque ','').replace('Une fois par ','')},{l:'Par an',n:1,v:r=>eur(annuel(r))},{l:'Prochaine échéance',v:r=>dfr(prochaine(r.echeance))||'—'}],S.assurances,'assurances','Aucune assurance.');
+}
+function rDon(){$('theme').value=S.settings.theme||'auto';$('lastExp').textContent=S.settings.lastExport?'Dernière sauvegarde : '+new Date(S.settings.lastExport).toLocaleDateString('fr-FR'):'Aucune sauvegarde pour l’instant.'}
+function applyTheme(){const t=S.settings.theme;if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;else delete document.documentElement.dataset.theme}
+const R={accueil:rAccueil,livraisons:rLiv,vehicules:rVeh,salaire:rSal,prets:rPre,donnees:rDon,apropos:()=>{}};
+function view(){return R[location.hash.slice(1)]?location.hash.slice(1):'accueil'}
+function render(){const v=view();for(const k in R)$('v-'+k).hidden=k!==v;
+ document.querySelectorAll('nav a').forEach(a=>{if(a.hash==='#'+v)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});R[v]()}
+addEventListener('hashchange',()=>{render();$('main').focus({preventScroll:false})});
+['livPer','vehAn','salAn'].forEach(i=>$(i).addEventListener('change',render));
+$('objectif').addEventListener('change',e=>{S.settings.objectif=Math.max(0,num(e.target.value));save();render()});
+$('theme').addEventListener('change',e=>{S.settings.theme=e.target.value;save();applyTheme()});
+
+/* ---------- Données ---------- */
+function dl(name,blob){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+$('exp').addEventListener('click',()=>{S.settings.lastExport=new Date().toISOString();save();dl(`contavo-sauvegarde-${today()}.json`,new Blob([JSON.stringify({app:'Contavo',version:VERSION,...S},null,1)],{type:'application/json'}));rDon();toast('Sauvegarde téléchargée')});
+$('imp').addEventListener('change',e=>{const f=e.target.files[0];e.target.value='';if(!f)return;if(f.size>5e6){toast('Fichier trop volumineux.');return}
+ const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(d.app!=='Contavo')throw 0;if(!confirm('Remplacer toutes les données de cet appareil par celles de la sauvegarde ?'))return;S=clean(d);save();applyTheme();render();toast('Données restaurées')}catch(x){toast("Ce fichier n'est pas une sauvegarde Contavo valide.")}};r.readAsText(f)});
+$('wipe').addEventListener('click',()=>{if(confirm('Effacer définitivement toutes vos données de cet appareil ?')&&confirm('Dernière confirmation : cette action est irréversible. Continuer ?')){S=def();save();applyTheme();render();toast('Toutes les données ont été effacées')}});
+function csv(c){const fs=SCH[c].f,q=v=>`"${String(v??'').replace(/"/g,'""')}"`;
+ const out=[fs.map(f=>q(f.l)).join(';'),...S[c].map(r=>fs.map(f=>{let v=r[f.k];if(f.o)v=LAB(c,f.k,v);if(f.n&&v!=='')v=String(num(v)).replace('.',',');return q(/^[=+\-@]/.test(String(v))&&!f.n?"'"+v:v)}).join(';'))];
+ dl(`contavo-${c}-${today()}.csv`,new Blob(['﻿'+out.join('\r\n')],{type:'text/csv'}))}
+
+$('ver').textContent=VERSION;applyTheme();render();
+if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
