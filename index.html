@@ -192,7 +192,7 @@ footer{max-width:1100px;margin:0 auto;padding:8px 16px 28px;font-size:.88rem;col
   <details><summary>Si je désinstalle l'application, que deviennent mes données ?</summary><p>Elles sont effacées avec l'application. Faites une sauvegarde avant. Effacer les données de navigation du navigateur pour ce site a le même effet.</p></details>
   <details><summary>Comment installer Contavo sur iPhone ?</summary><p>Ouvrez le site dans Safari, touchez Partager puis « Sur l'écran d'accueil ». L'application s'ouvre ensuite en plein écran et fonctionne hors connexion.</p></details>
   <details><summary>Comment est calculé le coût d'une livraison ?</summary><p>Km parcourus × (consommation du véhicule × prix de l'énergie ÷ 100 + usure au km). Ces valeurs se règlent dans la rubrique Véhicules. Le net = rémunération + pourboire − coût du trajet.</p></details>
-  <details><summary>D'où viennent les consommations des véhicules ?</summary><p>Des données officielles d'homologation (cycle WLTP) publiées par l'ADEME (véhicules neufs vendus en France) et par l'Agence européenne pour l'environnement (immatriculations en France 2021-2022). Elles sont souvent un peu inférieures à la consommation réelle : vous pouvez les corriger. Les voitures sans permis, les deux-roues et certains modèles récents n'y figurent pas encore : saisissez-les à la main.</p></details>
+  <details><summary>D'où viennent les consommations des véhicules ?</summary><p>Des données officielles d'homologation (cycle WLTP) publiées par l'ADEME (véhicules neufs vendus en France) et par l'Agence européenne pour l'environnement (immatriculations en France 2021-2022). Elles sont souvent un peu inférieures à la consommation réelle : vous pouvez les corriger. Pour les voitures sans permis, scooters et motos les plus courants, ce sont les données publiées par les constructeurs. Les quads et certains modèles récents n'y figurent pas encore : saisissez-les à la main.</p></details>
   <details><summary>Comment est calculé le coût réel au km de mon véhicule ?</summary><p>Total des dépenses de l'année divisé par les km parcourus, mesurés entre le premier et le dernier relevé de compteur de l'année. Pensez à noter un relevé en début et en fin de période.</p></details>
   <details><summary>Pourquoi ma mensualité est-elle différente de celle de ma banque ?</summary><p>Contavo calcule un prêt à taux fixe et échéances constantes. Les différés, paliers, frais intégrés ou arrondis bancaires peuvent créer de petits écarts : seul le tableau d'amortissement de votre banque fait foi.</p></details>
   <details><summary>Contavo me donne-t-il des conseils fiscaux ou financiers ?</summary><p>Non. Les chiffres sont des estimations pour vous aider à suivre vos comptes. Pour vos impôts, consultez impots.gouv.fr ; pour un prêt, votre banque.</p></details>
@@ -224,7 +224,7 @@ footer{max-width:1100px;margin:0 auto;padding:8px 16px 28px;font-size:.88rem;col
 
 <script>
 "use strict";
-const VERSION='1.2.1', KEY='contavo.v1';
+const VERSION='1.3.0', KEY='contavo.v1';
 /* À renseigner : lien du formulaire Google et adresse de contact */
 const CONFIG={form:'https://forms.gle/qjBmpSQFVbPAcjDQ6',mail:''};
 const ok=v=>v&&!v.startsWith('[');
@@ -346,7 +346,7 @@ async function picker(){
   <label for="vp_v">Version<select id="vp_v" disabled><option value="">—</option></select></label></div>
   <p class="aide" id="vp_src" style="margin:0" aria-live="polite"></p></div>`);
  const db=await vdb(),B=$('vp_b'),M=$('vp_m'),V=$('vp_v'),src=$('vp_src');
- const absent="Véhicule absent (voiture sans permis, deux-roues, modèle récent) ? Remplissez la consommation à la main et signalez-le dans Aide & idées.";
+ const absent="Véhicule absent (modèle récent, quad, moto ou scooter non listé) ? Remplissez la consommation à la main et signalez-le dans Aide & idées.";
  if(!db){B.innerHTML='<option value="">Liste indisponible</option>';B.disabled=true;src.textContent="La liste des véhicules n'a pas pu être chargée (connexion ?). Saisissez les valeurs à la main.";return}
  B.innerHTML='<option value="">— Choisir —</option>'+Object.keys(db.d).map(b=>`<option>${esc(b)}</option>`).join('');src.textContent=absent;
  B.onchange=()=>{const ms=db.d[B.value]||{};M.innerHTML='<option value="">— Choisir —</option>'+Object.keys(ms).map(m=>`<option>${esc(m)}</option>`).join('');M.disabled=!B.value;V.innerHTML='<option value="">—</option>';V.disabled=true};
@@ -355,7 +355,7 @@ async function picker(){
   $('f_nom').value=cap(B.value+' '+v.v.replace(/ – .*$/,''));
   $('f_energie').value=v.e;$('f_conso').value=String(v.c).replace('.',',');
   const u=v.e==='electrique'?'kWh/100 km':'L/100 km';
-  src.innerHTML=`Consommation officielle (cycle WLTP) : <b>${fmt(v.c)} ${u}</b>${v.ce?` en essence/diesel, et ${fmt(v.ce)} kWh/100 km en mode électrique`:''}${v.a?` · autonomie annoncée ${v.a} km`:''}. Source : ${esc(db.sources[v.s])}. En conditions réelles, comptez souvent un peu plus. Indiquez maintenant le prix de votre énergie.`};
+  src.innerHTML=`${v.s==='C'?'Consommation constructeur':'Consommation officielle (cycle WLTP)'} : <b>${fmt(v.c)} ${u}</b>${v.n?` (${esc(v.n)})`:''}${v.ce?` en essence/diesel, et ${fmt(v.ce)} kWh/100 km en mode électrique`:''}${v.a?` · autonomie annoncée ${v.a} km`:''}. Source : ${esc(db.sources[v.s])}. En conditions réelles, comptez souvent un peu plus. Indiquez maintenant le prix de votre énergie.`};
 }
 
 /* ---------- Calculs ---------- */
