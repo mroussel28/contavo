@@ -66,6 +66,7 @@ dialog form{padding:18px;display:grid;gap:12px}
 .fgrid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
 #toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 16px;border-radius:12px;display:none;z-index:30}
 details summary{cursor:pointer;font-weight:700;min-height:36px}
+.faq details{border-top:1px solid var(--line);padding:8px 0}.faq details p{margin:6px 0 4px;color:var(--ink2)}
 footer{max-width:1100px;margin:0 auto;padding:8px 16px 28px;font-size:.88rem;color:var(--muted)}
 @media (max-width:640px){
  table.resp thead{display:none}table.resp,table.resp tbody{display:block}
@@ -85,7 +86,7 @@ footer{max-width:1100px;margin:0 auto;padding:8px 16px 28px;font-size:.88rem;col
  </div>
  <nav aria-label="Rubriques" id="nav">
   <a href="#accueil">Accueil</a><a href="#livraisons">Livraisons</a><a href="#vehicules">Véhicules</a>
-  <a href="#salaire">Salaire</a><a href="#prets">Prêts &amp; assurances</a><a href="#donnees">Mes données</a><a href="#apropos">À propos</a>
+  <a href="#salaire">Salaire</a><a href="#prets">Prêts &amp; assurances</a><a href="#donnees">Mes données</a><a href="#aide">Aide &amp; idées</a><a href="#apropos">À propos</a>
  </nav>
 </header>
 
@@ -175,11 +176,35 @@ footer{max-width:1100px;margin:0 auto;padding:8px 16px 28px;font-size:.88rem;col
  </div>
 </section>
 
+<section id="v-aide" hidden aria-labelledby="t-aide">
+ <h2 id="t-aide">Aide &amp; idées</h2>
+ <div class="panel" id="idees">
+  <h3>💡 Proposer une amélioration</h3>
+  <p>Une idée, un oubli, un calcul qui vous semble faux ? Dites-le : chaque suggestion est lue et étudiée pour les prochaines versions.</p>
+  <div class="row" id="ideeBtns"></div>
+  <p class="note" style="margin:0">Ne mettez aucune information personnelle (revenus, noms, numéros de contrat) dans votre message. Voir la <a href="confidentialite.html#suggestions">politique de confidentialité</a>.</p>
+ </div>
+ <div class="panel faq">
+  <h3>Questions fréquentes</h3>
+  <details><summary>Où sont enregistrées mes données ?</summary><p>Uniquement dans la mémoire de votre appareil (le stockage du navigateur ou de l'application). Rien n'est envoyé sur Internet : ni l'éditeur ni personne d'autre ne peut les voir.</p></details>
+  <details><summary>Je change de téléphone : comment récupérer mes données ?</summary><p>Sur l'ancien appareil : Mes données → Télécharger une sauvegarde. Envoyez-vous le fichier (e-mail, cloud, câble). Sur le nouvel appareil : Mes données → Restaurer, puis choisissez le fichier.</p></details>
+  <details><summary>Puis-je utiliser Contavo sur mon ordinateur et mon téléphone en même temps ?</summary><p>Oui, mais les données ne se synchronisent pas toutes seules : chaque appareil a les siennes. Utilisez la sauvegarde et la restauration pour passer de l'un à l'autre.</p></details>
+  <details><summary>Si je désinstalle l'application, que deviennent mes données ?</summary><p>Elles sont effacées avec l'application. Faites une sauvegarde avant. Effacer les données de navigation du navigateur pour ce site a le même effet.</p></details>
+  <details><summary>Comment installer Contavo sur iPhone ?</summary><p>Ouvrez le site dans Safari, touchez Partager puis « Sur l'écran d'accueil ». L'application s'ouvre ensuite en plein écran et fonctionne hors connexion.</p></details>
+  <details><summary>Comment est calculé le coût d'une livraison ?</summary><p>Km parcourus × (consommation du véhicule × prix de l'énergie ÷ 100 + usure au km). Ces valeurs se règlent dans la rubrique Véhicules. Le net = rémunération + pourboire − coût du trajet.</p></details>
+  <details><summary>Comment est calculé le coût réel au km de mon véhicule ?</summary><p>Total des dépenses de l'année divisé par les km parcourus, mesurés entre le premier et le dernier relevé de compteur de l'année. Pensez à noter un relevé en début et en fin de période.</p></details>
+  <details><summary>Pourquoi ma mensualité est-elle différente de celle de ma banque ?</summary><p>Contavo calcule un prêt à taux fixe et échéances constantes. Les différés, paliers, frais intégrés ou arrondis bancaires peuvent créer de petits écarts : seul le tableau d'amortissement de votre banque fait foi.</p></details>
+  <details><summary>Contavo me donne-t-il des conseils fiscaux ou financiers ?</summary><p>Non. Les chiffres sont des estimations pour vous aider à suivre vos comptes. Pour vos impôts, consultez impots.gouv.fr ; pour un prêt, votre banque.</p></details>
+  <details><summary>L'application est-elle vraiment gratuite ?</summary><p>Oui : pas de publicité, pas d'abonnement, pas d'achat intégré, pas de compte à créer.</p></details>
+  <details><summary>J'ai trouvé un bug, que faire ?</summary><p>Utilisez « Proposer une amélioration » ci-dessus en décrivant ce que vous faisiez, ce qui s'est passé et votre appareil (iPhone, Android, ordinateur).</p></details>
+ </div>
+</section>
+
 <section id="v-apropos" hidden aria-labelledby="t-apr">
  <h2 id="t-apr">À propos</h2>
  <div class="panel">
   <p>Contavo est une application gratuite, sans publicité et sans compte. Elle fonctionne hors connexion.</p>
-  <p><b>Vie privée :</b> aucune donnée n'est collectée par l'éditeur. Tout reste dans la mémoire de votre appareil.</p>
+  <p><b>Vie privée :</b> aucune donnée n'est collectée par l'éditeur. Tout reste dans la mémoire de votre appareil. Seules les suggestions que vous choisissez d'envoyer lui parviennent.</p>
   <p>Les calculs sont fournis à titre indicatif et ne constituent ni un conseil financier, ni un conseil fiscal, ni un conseil juridique.</p>
   <p><a href="confidentialite.html">Politique de confidentialité</a> · <a href="mentions-legales.html">Mentions légales</a> · <a href="conditions.html">Conditions d'utilisation</a></p>
   <p class="note">Version <span id="ver"></span></p>
@@ -187,7 +212,7 @@ footer{max-width:1100px;margin:0 auto;padding:8px 16px 28px;font-size:.88rem;col
 </section>
 </main>
 
-<footer><a href="confidentialite.html">Confidentialité</a> · <a href="mentions-legales.html">Mentions légales</a> · <a href="conditions.html">Conditions</a></footer>
+<footer><a href="#aide">Aide &amp; idées</a> · <a href="confidentialite.html">Confidentialité</a> · <a href="mentions-legales.html">Mentions légales</a> · <a href="conditions.html">Conditions</a></footer>
 
 <dialog id="dlg" aria-labelledby="dlgT"><form method="dialog" id="dlgF" novalidate>
  <h2 id="dlgT"></h2><div class="fgrid" id="dlgB"></div>
@@ -199,7 +224,10 @@ footer{max-width:1100px;margin:0 auto;padding:8px 16px 28px;font-size:.88rem;col
 
 <script>
 "use strict";
-const VERSION='1.0.1', KEY='contavo.v1';
+const VERSION='1.1.0', KEY='contavo.v1';
+/* À renseigner : lien du formulaire Google et adresse de contact */
+const CONFIG={form:'https://forms.gle/qjBmpSQFVbPAcjDQ6',mail:'contavo.28.app@gmail.com'};
+const ok=v=>v&&!v.startsWith('[');
 const def=()=>({v:1,settings:{theme:'auto',objectif:0,lastExport:null},vehicules:[],livraisons:[],depenses:[],compteurs:[],bulletins:[],prets:[],assurances:[]});
 const COLS=['vehicules','livraisons','depenses','compteurs','bulletins','prets','assurances'];
 let S=load();
@@ -385,7 +413,11 @@ function rPre(){
 }
 function rDon(){$('theme').value=S.settings.theme||'auto';$('lastExp').textContent=S.settings.lastExport?'Dernière sauvegarde : '+new Date(S.settings.lastExport).toLocaleDateString('fr-FR'):'Aucune sauvegarde pour l’instant.'}
 function applyTheme(){const t=S.settings.theme;if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;else delete document.documentElement.dataset.theme}
-const R={accueil:rAccueil,livraisons:rLiv,vehicules:rVeh,salaire:rSal,prets:rPre,donnees:rDon,apropos:()=>{}};
+function rAide(){const b=[];
+ if(ok(CONFIG.form))b.push(`<a class="btn pri" href="${esc(CONFIG.form)}" target="_blank" rel="noopener noreferrer">Proposer une idée (formulaire anonyme)</a>`);
+ if(ok(CONFIG.mail))b.push(`<a class="btn" href="mailto:${esc(CONFIG.mail)}?subject=${encodeURIComponent('[Contavo] Suggestion')}&body=${encodeURIComponent('Version '+VERSION+'\nRubrique concernée : \nMon idée ou le problème rencontré : \n')}">Écrire par e-mail</a> <span class="note">${esc(CONFIG.mail)}</span>`);
+ $('ideeBtns').innerHTML=b.join('')||'<p class="note">Le formulaire de suggestions arrive bientôt.</p>'}
+const R={accueil:rAccueil,aide:rAide,livraisons:rLiv,vehicules:rVeh,salaire:rSal,prets:rPre,donnees:rDon,apropos:()=>{}};
 function view(){return R[location.hash.slice(1)]?location.hash.slice(1):'accueil'}
 function render(){const v=view();for(const k in R)$('v-'+k).hidden=k!==v;
  document.querySelectorAll('nav a').forEach(a=>{if(a.hash==='#'+v)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});R[v]()}
